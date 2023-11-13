@@ -8,5 +8,7 @@ describe("page navigation", () => {
     cy.get('[data-cy = "header-home-link"]').click();
     // cy.get("h1").contains("Home Page").should("have.length", 1);
     cy.location("pathname").should("eq", "/");
+    cy.go("back");
+    cy.location("pathname").should("eq", "/about");
   });
 });
