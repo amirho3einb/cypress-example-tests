@@ -14,15 +14,15 @@ describe("contact form", () => {
   });
 
   it("should submit the form", () => {
-    cy.get('[data-cy = "contact-input-name"]').type("Sama");
-    cy.get('[data-cy = "contact-input-message"]').type("I love You");
-    // cy.get('[data-cy = "contact-input-email"]').type("sama@gmail.com");
-    cy.get('[data-cy = "contact-btn-submit"]').as("submitBtn");
+    cy.getById("contact-input-name").type("Sama");
+    cy.getById("contact-input-message").type("I love You");
+    // cy.getById('contact-input-email').type("sama@gmail.com");
+    cy.getById("contact-btn-submit").as("submitBtn");
     cy.get("@submitBtn").then((el) => {
       expect(el.attr("disabled")).to.be.undefined;
       expect(el.text()).to.match(/^Send Message/);
     });
-    cy.get('[data-cy = "contact-input-email"]').type("sama@gmail.com{enter}");
+    cy.getById("contact-input-email").type("sama@gmail.com{enter}");
     // cy.get("@submitBtn")
     //   .contains("Send Message")
     //   .and("not.have.attr", "disabled");
@@ -32,7 +32,7 @@ describe("contact form", () => {
   });
 
   it("should validate the form input", () => {
-    cy.get('form button[type="submit"]').as("submitBtn");
+    cy.get('form button[type="submit').as("submitBtn");
     cy.submitForm();
     cy.get("@submitBtn").then((el) => {
       expect(el).to.not.have.attr("disabled");
@@ -40,25 +40,25 @@ describe("contact form", () => {
     });
     cy.get("@submitBtn").contains("Send Message");
 
-    cy.get('[data-cy = "contact-input-message"]').focus().blur();
+    cy.getById("contact-input-message").focus().blur();
 
-    cy.get('[data-cy = "contact-input-message"]')
+    cy.getById("contact-input-message")
       .parent()
       .should((el) => {
         expect(el.attr("class")).not.to.be.undefined;
         expect(el.attr("class")).to.contains("invalid");
       });
 
-    cy.get('[data-cy = "contact-input-name"]').focus().blur();
-    cy.get('[data-cy = "contact-input-name"]')
+    cy.getById("contact-input-name").focus().blur();
+    cy.getById("contact-input-name")
       .parent()
       .should((el) => {
         expect(el.attr("class")).not.to.be.undefined;
         expect(el.attr("class")).to.contains("invalid");
       });
 
-    cy.get('[data-cy = "contact-input-email"]').focus().blur();
-    cy.get('[data-cy = "contact-input-email"]')
+    cy.getById("contact-input-email").focus().blur();
+    cy.getById("contact-input-email")
       .parent()
       .should((el) => {
         expect(el.attr("class")).not.to.be.undefined;
