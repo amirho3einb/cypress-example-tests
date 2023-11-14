@@ -1,6 +1,6 @@
 describe("page navigation", () => {
   it("should navigate beetween pages", () => {
-    cy.visit("http://localhost:5173/");
+    cy.visit("/");
     // cy.get("header a").last();
     cy.get('[data-cy = "header-about-link"]').click();
     // cy.get("h1").contains("About Us").should("have.length", 1);
