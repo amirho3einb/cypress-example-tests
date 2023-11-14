@@ -1,6 +1,19 @@
 describe("contact form", () => {
-  it("should submit the form", () => {
+  before(() => {
+    // runs only once, before all tests
+  });
+  beforeEach(() => {
+    // runs before every test (i.e, it's repeated)
     cy.visit("/about");
+  });
+  afterEach(() => {
+    // runs after every test
+  });
+  after(() => {
+    // runs after all tests
+  });
+
+  it("should submit the form", () => {
     cy.get('[data-cy = "contact-input-name"]').type("Sama");
     cy.get('[data-cy = "contact-input-message"]').type("I love You");
     // cy.get('[data-cy = "contact-input-email"]').type("sama@gmail.com");
@@ -19,9 +32,8 @@ describe("contact form", () => {
   });
 
   it("should validate the form input", () => {
-    cy.visit("/about");
-    cy.get('[data-cy = "contact-btn-submit"]').as("submitBtn");
-    cy.get("@submitBtn").click();
+    cy.get('form button[type="submit"]').as("submitBtn");
+    cy.submitForm();
     cy.get("@submitBtn").then((el) => {
       expect(el).to.not.have.attr("disabled");
       expect(el.text()).to.not.equal("Sending");
