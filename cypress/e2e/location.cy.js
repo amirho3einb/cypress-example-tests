@@ -16,6 +16,8 @@ describe("share location", () => {
       cy.stub(win.navigator.clipboard, "writeText")
         .as("saveToClipboard")
         .resolves();
+      cy.spy(win.localStorage, "setItem").as("storeLocation");
+      cy.spy(win.localStorage, "getItem").as("getStoreLocation");
     });
   });
   it("should fetch the user location", () => {
@@ -40,6 +42,17 @@ describe("share location", () => {
         "have.been.calledWithMatch",
         new RegExp(`${latitude}.*${longitude}.*${encodeURI("Amir hossein")}`)
       );
+      cy.get("@storeLocation").should("have.been.called");
+      cy.get("@storeLocation").should(
+        "have.been.calledWithMatch",
+        /Amir hossein/,
+        new RegExp(`${latitude}.*${longitude}.*${encodeURI("Amir hossein")}`)
+      );
+      cy.get('[data-cy="share-loc-btn"]').click();
+      cy.get("@getStoreLocation").should("have.been.called");
+      cy.get('[data-cy="info-message"]').should("be.visible");
+      cy.get('[data-cy="info-message"]').should("have.class", "visible");
+      cy.get('[data-cy="info-message"]').should("not.be.visible");
     });
   });
 });
