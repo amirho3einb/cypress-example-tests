@@ -14,4 +14,17 @@ describe("Newsletter", () => {
     cy.wait("@subscribe");
     cy.contains("Thanks for signing up!");
   });
+
+  it("should display validation errors", () => {
+    cy.intercept("POST", "/newsletter*", {
+      message: "Email exists already.",
+    }).as("subscribe"); // intercept any HTTP rrquest
+    cy.visit("/");
+    cy.get('[data-cy="newsletter-email"]').click();
+    cy.get('[data-cy="newsletter-email"]').should("not.be.disabled");
+    cy.get('[data-cy="newsletter-email"]').type("test@gmail.com");
+    cy.get('[data-cy="newsletter-submit"]').click();
+    cy.wait("@subscribe");
+    cy.contains("Email exists already.");
+  });
 });
